@@ -581,7 +581,7 @@
 			<div class="main-content">
 				<div class="breadcrumbs" id="breadcrumbs">
 					<ul class="breadcrumb">
-						<asp:ContentPlaceHolder id="breadcrumbs" runat="sever">
+						<asp:ContentPlaceHolder id="breadcrumbs" runat="server">
 						<li>
 							<i class="icon-home home-icon"></i>
 							<a href="#">Home</a>
@@ -606,7 +606,7 @@
 
 				<div class="page-content">
 					<div class="page-header position-relative">
-						<asp:ContentPlaceHolder id="pageTitle" runat="sever">
+						<asp:ContentPlaceHolder id="pageTitle" runat="server">
 							<h1>
 								Dashboard
 								<small>
@@ -621,7 +621,7 @@
 						<div class="span12">
 							<!--PAGE CONTENT BEGINS-->
 
-							<asp:ContentPlaceHolder id="content" runat="sever">
+							<asp:ContentPlaceHolder id="content" runat="server">
 							
 							</asp:ContentPlaceHolder>
 
