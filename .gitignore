@@ -191,6 +191,6 @@ Desktop.ini
 $RECYCLE.BIN/
 publicat/publicat.sln
 publicat/publicat/publicat.csproj
-
+#project solution
 *.sln
 *.csproj
