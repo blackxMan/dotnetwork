@@ -1,0 +1,5 @@
+D:\works\dotnet\publicat\publicat\bin\publicat.dll
+D:\works\dotnet\publicat\publicat\bin\publicat.pdb
+D:\works\dotnet\publicat\publicat\obj\Debug\publicat.csprojResolveAssemblyReference.cache
+D:\works\dotnet\publicat\publicat\obj\Debug\publicat.dll
+D:\works\dotnet\publicat\publicat\obj\Debug\publicat.pdb
