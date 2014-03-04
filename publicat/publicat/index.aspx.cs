@@ -17,7 +17,7 @@ namespace publicat
         public string con = "m s";
         protected void Page_Load(object sender, EventArgs e)
         {
-            string connStr = "server=localhost;user=root;database=world;port=3306;password=001985;";
+            string connStr = "Server=localhost;user=root;database=world;port=3306;password=001985;";
             MySqlConnection conn = new MySqlConnection(connStr);
         }
     }
