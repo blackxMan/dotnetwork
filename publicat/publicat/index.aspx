@@ -3,6 +3,9 @@
     <li class="active">home</li>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
-   
+
+    <form action="#" runat="server">
+    hello!!
+        </form>
 
 </asp:Content>
