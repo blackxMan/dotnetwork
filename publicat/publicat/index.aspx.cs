@@ -9,7 +9,6 @@ using System.Data;
 
 using MySql.Data;
 using MySql.Data.MySqlClient;
-using publicat.test;
 namespace publicat
 {
     public partial class index : System.Web.UI.Page
