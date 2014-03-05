@@ -122,8 +122,8 @@ namespace publicat.Data
             {
                 Data.connecter();
                 MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-                if (id < 0) MySQLCmd = "insert into correcteur(nom, prenom, email, mdp) values(?nom, ?prenom, ?email, ?mdp)";
-                else MySQLCmd = "update correcteur set nom = ?nom, prenom = ?prenom, email = ?email, mdp = ?mdp where id = ?id ";
+                if (id < 0) MySQLCmd = "insert into correcteur(nom_corr, prenom_corr, email_corr, mdp_corr) values(?nom, ?prenom, ?email, ?mdp)";
+                else MySQLCmd = "update correcteur set nom_corr = ?nom, prenom_corr = ?prenom, email_corr = ?email, mdp_corr = ?mdp where id = ?id ";
                 MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
                 cmd.CommandType = CommandType.Text;
                 if(id > 0) cmd.Parameters.Add("?id", id);
