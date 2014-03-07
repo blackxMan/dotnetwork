@@ -18,53 +18,99 @@ namespace publicat.Data
             Connection = new MySqlConnection();
             Connection.ConnectionString = ConnnectionStr;
         }
-        public static DataSet getAuteurs()
-        {
+        public static DataTable getAuteurs()
+        {                                 
             Data.connecter();
             Data.Connection.Open();
-            MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
             string MySQLCmd = "SELECT * FROM auteur";
-            MyAdapter.SelectCommand = new MySqlCommand(MySQLCmd, Data.Connection);
-            DataSet ds = new DataSet();
-            MyAdapter.Fill(ds);
+            MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);            
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
             Data.Connection.Close();
-            return ds;
+            return dt;
         }
-        public static DataSet getArticles()
+        public static DataTable getArticles()
+        {            
+            Data.connecter();
+            Data.Connection.Open();
+            string MySQLCmd = "SELECT a.*, count(p.id_aut) as somme, t.* FROM article a, publie p, auteur au, theme t where t.id=a.id_th and a.id = p.id_article and p.id_aut = au.id group by p.id_article";
+            MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
+            dt.Columns.Add("principale", typeof(string));           
+            for (int i = 0; i < dt.Rows.Count;i++ )
+            {
+                dt.Rows[i]["principale"] = getAuteurPrincipal(int.Parse(dt.Rows[i]["id"].ToString()));
+            }
+            Data.Connection.Close();
+            return dt;
+        }
+
+        public static DataTable getArticlesByThemes(string libelle)
         {
             Data.connecter();
             Data.Connection.Open();
-            MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-            string MySQLCmd = "SELECT * FROM article a, public p, auteur au, theme t where t.id=a.id_th and a.id = p.id_article and p.id_aut = au.id and p.principale = 1";
-            MyAdapter.SelectCommand = new MySqlCommand(MySQLCmd, Data.Connection);
-            DataSet ds = new DataSet();
-            MyAdapter.Fill(ds);
+            string MySQLCmd = "SELECT * FROM theme t, article a where a.id_th = t.id and t.libelle = ?libelle";
+            MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+            cmd.Parameters.AddWithValue("?libelle", libelle);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
             Data.Connection.Close();
-            return ds;
+            return dt;
         }
-        public static DataSet getThemes()
+        public static string getAuteurPrincipal(int idArticle)
         {
             Data.connecter();
             Data.Connection.Open();
-            MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
+            string MySQLCmd = "SELECT concat(nom_aut,' ',prenom_aut) as nom FROM  publie p, auteur au where p.id_aut = au.id and p.id_article = ?idarticle and p.principale = 1";
+            MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+            cmd.Parameters.AddWithValue("?idarticle",idArticle);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
+            Data.Connection.Close();
+            return dt.Rows[0]["nom"].ToString();
+        }
+        
+        public static DataTable getThemes()
+        {           
+            Data.connecter();
+            Data.Connection.Open();
             string MySQLCmd = "SELECT * FROM theme";
-            MyAdapter.SelectCommand = new MySqlCommand(MySQLCmd, Data.Connection);
-            DataSet ds = new DataSet();
-            MyAdapter.Fill(ds);
+            MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
             Data.Connection.Close();
-            return ds;
+            return dt;
         }
-        public static DataSet getCorrecteurs()
+        public static int getIdAuteurByName(String nom)
         {
             Data.connecter();
-            Data.Connection.Open();
-            MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-            string MySQLCmd = "SELECT * FROM correcteur";
-            MyAdapter.SelectCommand = new MySqlCommand(MySQLCmd, Data.Connection);
-            DataSet ds = new DataSet();
-            MyAdapter.Fill(ds);
+            Data.Connection.Open();            
+            string MySQLCmd = "SELECT id FROM auteur where concat(nom_aut,prenom_aut)=?nom";
+            MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+            cmd.Parameters.AddWithValue("?nom", nom);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            rdr.Read();
+            int i = rdr.GetInt32(0);
             Data.Connection.Close();
-            return ds;
+            return i;
+        }
+        public static DataTable getCorrecteurs()
+        {           
+            Data.connecter();
+            Data.Connection.Open();
+            string MySQLCmd = "SELECT * FROM correcteur";
+            MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+            MySqlDataReader rdr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(rdr);
+            Data.Connection.Close();
+            return dt;
         }
         public static bool addAuteur(string nom, string prenom, string email, string mdp, int id = -1)
         {

@@ -1,12 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/layout.Master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="publicat.index" %>
 <%@ Import Namespace ="publicat.Data" %>
+<%@ Import Namespace="System.Data" %>  
+<%@ Import Namespace="MySql.Data.MySqlClient" %>  
 <asp:Content ID="Content1" ContentPlaceHolderID="breadcrumbs" runat="server">
     <li class="active">home</li>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <form action="#" runat="server">
     hello!!
-        <%  int[] n1 = new int[2] { 1, 1 };
+        <% /*int[] n1 = new int[2] { 1, 1 };
             int[] n2 = new int[2] { 2, 0 };
             List<int[]> l = new List<int[]>();
             l.Add(n1);
@@ -16,8 +18,19 @@
             foreach (int[] a in l)
             {%> 
                <%= a[0] %>
-            <%}%>
+            <%}*/%>
             
-            
+            <% //Response.Write(Data.getIdAuteurByName("abdoabdo"));
+               DataTable dt = Data.getArticles();
+               
+               foreach (DataRow row in dt.Rows)
+               {
+                   Response.Write(row["somme"].ToString());
+               }
+
+              // Response.Write(Data.getAuteurPrincipal(9));
+               %>
         </form>
+
+
 </asp:Content>
