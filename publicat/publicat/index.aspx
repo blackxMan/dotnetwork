@@ -21,13 +21,8 @@
             <%}*/%>
             
             <% //Response.Write(Data.getIdAuteurByName("abdoabdo"));
-               DataTable dt = Data.getArticles();
-               
-               foreach (DataRow row in dt.Rows)
-               {
-                   Response.Write(row["somme"].ToString());
-               }
-
+                Data.addPublie("sssssss","ssssssss","ssssssssss",1,"abdo abdo,hiso hiso",1);
+                //Response.Write(Data.getIdAuteurByName("abdo abdo"));
               // Response.Write(Data.getAuteurPrincipal(9));
                %>
         </form>

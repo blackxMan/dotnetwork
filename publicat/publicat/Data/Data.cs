@@ -91,7 +91,7 @@ namespace publicat.Data
         {
             Data.connecter();
             Data.Connection.Open();            
-            string MySQLCmd = "SELECT id FROM auteur where concat(nom_aut,prenom_aut)=?nom";
+            string MySQLCmd = "SELECT id FROM auteur where concat(nom_aut,' ',prenom_aut)=?nom";
             MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
             cmd.Parameters.AddWithValue("?nom", nom);
             MySqlDataReader rdr = cmd.ExecuteReader();
@@ -221,22 +221,50 @@ namespace publicat.Data
                 return -1;
             }
         }
-        public static bool addPublie(string description, string titre, string document, int id_theme, List<int[]> auteurs)
+        public static bool addPrincipale(long id_arti, int id_aut)
         {
-            long idArticle = addArticle(description, titre, document, id_theme);
             string MySQLCmd;
             try
             {
                 Data.connecter();
                 MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-                foreach (int[] a in auteurs)
+                MySQLCmd = "insert into publie(id_aut, id_article, principale) values(?id_aut, ?id_article, ?princ)";
+                MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("?id_aut", id_aut);
+                cmd.Parameters.AddWithValue("?id_article", id_arti);
+                cmd.Parameters.AddWithValue("?princ", 1);
+                Data.Connection.Open();
+                int result = cmd.ExecuteNonQuery();
+                Data.Connection.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+                return false;
+            }
+        }
+        public static bool addPublie(string description, string titre, string document, int id_theme, string auteurs, int principale)
+        {
+            long idArticle = addArticle(description, titre, document, id_theme);
+            addPrincipale(idArticle, principale);
+            string[] auteur = auteurs.Split(',');
+            Console.WriteLine(auteur.Length);
+            string MySQLCmd;
+            try
+            {
+                Data.connecter();
+                MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
+                foreach (string aut in auteur)
                 {
                     MySQLCmd = "insert into publie(id_aut, id_article, principale) values(?id_aut, ?id_article, ?princ)";
                     MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
                     cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.AddWithValue("?id_aut", a[0]);
+                    cmd.Parameters.AddWithValue("?id_aut", getIdAuteurByName(aut));
                     cmd.Parameters.AddWithValue("?id_article", idArticle);
-                    cmd.Parameters.AddWithValue("?princ", a[1]);
+                    cmd.Parameters.AddWithValue("?princ", 0);
                     Data.Connection.Open();
                     int result = cmd.ExecuteNonQuery();
                     Data.Connection.Close();
