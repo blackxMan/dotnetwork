@@ -10,7 +10,7 @@ namespace publicat.Data
 
     public class Data
     {
-        
+
         public static string ConnnectionStr = "Database=journal;Data Source=localhost;User Id=root;Password=";
         public static MySqlConnection Connection;
         public static void connecter()
@@ -18,12 +18,12 @@ namespace publicat.Data
             Connection = new MySqlConnection();
             Connection.ConnectionString = ConnnectionStr;
         }
-        public static DataSet getUtilisateur()
+        public static DataSet getAuteurs()
         {
             Data.connecter();
             Data.Connection.Open();
             MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-            string MySQLCmd = "SELECT * FROM auteur";        
+            string MySQLCmd = "SELECT * FROM auteur";
             MyAdapter.SelectCommand = new MySqlCommand(MySQLCmd, Data.Connection);
             DataSet ds = new DataSet();
             MyAdapter.Fill(ds);
@@ -35,14 +35,14 @@ namespace publicat.Data
             Data.connecter();
             Data.Connection.Open();
             MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-            string MySQLCmd = "SELECT * FROM article";
+            string MySQLCmd = "SELECT * FROM article a, public p, auteur au, theme t where t.id=a.id_th and a.id = p.id_article and p.id_aut = au.id and p.principale = 1";
             MyAdapter.SelectCommand = new MySqlCommand(MySQLCmd, Data.Connection);
             DataSet ds = new DataSet();
             MyAdapter.Fill(ds);
             Data.Connection.Close();
             return ds;
         }
-        public static DataSet getTheme()
+        public static DataSet getThemes()
         {
             Data.connecter();
             Data.Connection.Open();
@@ -54,7 +54,7 @@ namespace publicat.Data
             Data.Connection.Close();
             return ds;
         }
-        public static DataSet getCorrecteur()
+        public static DataSet getCorrecteurs()
         {
             Data.connecter();
             Data.Connection.Open();
@@ -73,15 +73,15 @@ namespace publicat.Data
             {
                 Data.connecter();
                 MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-                if (id < 0) {  MySQLCmd = "insert into auteur(nom, prenom, email, mdp) values(?nom, ?prenom, ?email, ?mdp)"; }
-                else { MySQLCmd = "update auteur set nom = ?nom, prenom = ?prenom, email = ?email, mdp = ?mdp) where id = ?id"; }
+                if (id < 0) { MySQLCmd = "insert into auteur(nom_aut, prenom_aut, email_aut, mdp_aut) values(?nom, ?prenom, ?email, ?mdp)"; }
+                else { MySQLCmd = "UPDATE `auteur` SET `MDP_AUT` = ?mdp, `NOM_AUT` = ?nom, `PRENOM_AUT` = ?prenom, `EMAIL_AUT` = ?email WHERE `ID` = ?id;"; }
                 MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
                 cmd.CommandType = CommandType.Text;
-                if (id > 0) cmd.Parameters.Add("?id", id);
-                cmd.Parameters.Add("?nom", nom);
-                cmd.Parameters.Add("?prenom", prenom);
-                cmd.Parameters.Add("?email", email);
-                cmd.Parameters.Add("?mdp", mdp);
+                if (id > 0) cmd.Parameters.AddWithValue("?id", id);
+                cmd.Parameters.AddWithValue("?nom", nom);
+                cmd.Parameters.AddWithValue("?prenom", prenom);
+                cmd.Parameters.AddWithValue("?email", email);
+                cmd.Parameters.AddWithValue("?mdp", mdp);
                 Data.Connection.Open();
                 int result = cmd.ExecuteNonQuery();
                 Data.Connection.Close();
@@ -89,8 +89,9 @@ namespace publicat.Data
             }
             catch (Exception e)
             {
+                Console.Write(e);
                 return false;
-            }         
+            }
         }
         public static bool addTheme(string libelle, int id = -1)
         {
@@ -103,34 +104,38 @@ namespace publicat.Data
                 else MySQLCmd = "update theme set libelle = ?libelle where id = ?id";
                 MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
                 cmd.CommandType = CommandType.Text;
-                if (id > 0) cmd.Parameters.Add("?id", id);
-                cmd.Parameters.Add("?libelle", libelle);             
+                
+                cmd.Parameters.AddWithValue("?libelle", libelle);
+                if (id > 0) { cmd.Parameters.AddWithValue("?id", (int)id); }
                 Data.Connection.Open();
+                
                 int result = cmd.ExecuteNonQuery();
                 Data.Connection.Close();
+               
                 return true;
             }
             catch (Exception e)
             {
+                Console.Write(e);
                 return false;
             }
         }
-        public static bool addCorrecteur(string nom, string prenom, string email, string mdp, int id)
+        public static bool addCorrecteur(string nom, string prenom, string email, string mdp, int id = -1)
         {
             string MySQLCmd;
             try
             {
                 Data.connecter();
                 MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-                if (id < 0) MySQLCmd = "insert into correcteur(nom_corr, prenom_corr, email_corr, mdp_corr) values(?nom, ?prenom, ?email, ?mdp)";
-                else MySQLCmd = "update correcteur set nom_corr = ?nom, prenom_corr = ?prenom, email_corr = ?email, mdp_corr = ?mdp where id = ?id ";
+                if (id < 0) MySQLCmd = "INSERT INTO `correcteur` (`PRENOM_CORR`, `NOM_CORR`, `EMAIL_CORR`, `mdp`) VALUES (?prenom, ?nom, ?email, ?mdp);";
+                else MySQLCmd = "UPDATE `journal`.`correcteur` SET `PRENOM_CORR` = ?prenom, `NOM_CORR` = ?nom, `EMAIL_CORR` = ?email, `mdp` = ?mdp WHERE `correcteur`.`ID` = ?id;";
                 MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
                 cmd.CommandType = CommandType.Text;
-                if(id > 0) cmd.Parameters.Add("?id", id);
-                cmd.Parameters.Add("?nom", nom);
-                cmd.Parameters.Add("?prenom", prenom);
-                cmd.Parameters.Add("?email", email);
-                cmd.Parameters.Add("?mdp", mdp);
+                if (id > 0) cmd.Parameters.AddWithValue("?id", id);
+                cmd.Parameters.AddWithValue("?nom", nom);
+                cmd.Parameters.AddWithValue("?prenom", prenom);
+                cmd.Parameters.AddWithValue("?email", email);
+                cmd.Parameters.AddWithValue("?mdp", mdp);
                 Data.Connection.Open();
                 int result = cmd.ExecuteNonQuery();
                 Data.Connection.Close();
@@ -138,23 +143,26 @@ namespace publicat.Data
             }
             catch (Exception e)
             {
+                Console.Write(e);
                 return false;
             }
         }
-        public static long addArticle(string description, string titre, int id)
+        public static long addArticle(string description, string titre, string document, int id_theme, int id = -1)
         {
             string MySQLCmd;
             try
             {
                 Data.connecter();
                 MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-                if (id < 0) MySQLCmd = "insert into article(date_creation, date_modification, titre, description) values(now(), now(), ?description, ?mdp)";
+                if (id < 0) MySQLCmd = "INSERT INTO `article` ( `ID_TH`, `DATE_CREATION`, `DATE_MODIFICATION`, `TITRE`, `DESCIPTION`, `document`, `etat`) VALUES (?id_theme, now(), now(), ?titre, ?description, ?document, 0);";
                 else MySQLCmd = "update article set description = ?description, titre = ?titre where id = ?id";
                 MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
                 cmd.CommandType = CommandType.Text;
-                if (id > 0) { cmd.Parameters.Add("?id", id); }
-                cmd.Parameters.Add("?description", description);
-                cmd.Parameters.Add("?titre", titre);       
+                if (id > 0) { cmd.Parameters.AddWithValue("?id", id); }
+                cmd.Parameters.AddWithValue("?description", description);
+                cmd.Parameters.AddWithValue("?titre", titre);          
+                cmd.Parameters.AddWithValue("?id_theme", id_theme);
+                cmd.Parameters.AddWithValue("?document", document);
                 Data.Connection.Open();
                 int result = cmd.ExecuteNonQuery();
                 Data.Connection.Close();
@@ -163,35 +171,87 @@ namespace publicat.Data
             }
             catch (Exception e)
             {
+                Console.Write(e);
                 return -1;
             }
         }
-        public static long addPublie(string description, string titre, int id)
+        public static bool addPublie(string description, string titre, string document, int id_theme, List<int[]> auteurs)
         {
-            long idArticle = addArticle(description, titre, id);
+            long idArticle = addArticle(description, titre, document, id_theme);
             string MySQLCmd;
             try
             {
                 Data.connecter();
                 MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
-                if (id < 0) MySQLCmd = "insert into article(date_creation, date_modification, titre, description) values(now(), now(), ?description, ?mdp)";
-                else MySQLCmd = "update article set description = ?description, titre = ?titre where id = ?id";
+                foreach (int[] a in auteurs)
+                {
+                    MySQLCmd = "insert into publie(id_aut, id_article, principale) values(?id_aut, ?id_article, ?princ)";
+                    MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("?id_aut", a[0]);
+                    cmd.Parameters.AddWithValue("?id_article", idArticle);
+                    cmd.Parameters.AddWithValue("?princ", a[1]);
+                    Data.Connection.Open();
+                    int result = cmd.ExecuteNonQuery();
+                    Data.Connection.Close();
+                }
+                
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+                return false;
+            }
+        }
+        public static bool corrigeArticle(int idArticle, string justification, int etat, int id_Corr, int id_Article)
+        {
+            string MySQLCmd;
+            try
+            {
+                Data.connecter();
+                MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
+                MySQLCmd = "update article set justification = ?just, etat = ?etat, id_corr = ?id_corr where id = ?id";
                 MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
                 cmd.CommandType = CommandType.Text;
-                if (id > 0) { cmd.Parameters.Add("?id",id); }
-                cmd.Parameters.Add("?description", description);
-                cmd.Parameters.Add("?titre", titre);
+                cmd.Parameters.AddWithValue("?id", id_Article);
+                cmd.Parameters.AddWithValue("?just", justification);
+                cmd.Parameters.AddWithValue("?etat", etat);
+                cmd.Parameters.AddWithValue("?id_corr", id_Corr);
                 Data.Connection.Open();
                 int result = cmd.ExecuteNonQuery();                
-                long last = cmd.LastInsertedId;
                 Data.Connection.Close();
-                return last;
+                return true;
             }
             catch (Exception e)
             {
-                return -1;
+                Console.Write(e);
+                return false;
+            }
+        }
+
+        public static bool supprimer(string table, int id)
+        {
+            string MySQLCmd;
+            try
+            {
+                Data.connecter();
+                MySqlDataAdapter MyAdapter = new MySqlDataAdapter();
+                MySQLCmd = "delete from "+table+" where id = ?id";
+                MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("?id", id);                
+                Data.Connection.Open();
+                int result = cmd.ExecuteNonQuery();
+                Data.Connection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+                return false;
             }
         }
     }
-     
+
 }
