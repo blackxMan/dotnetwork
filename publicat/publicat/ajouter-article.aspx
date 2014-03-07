@@ -90,7 +90,7 @@
 
 			<div class="controls">
                 <asp:FileUpload ID="cover" runat="server" placeholder="choisir votre couverture" />
-                <asp:RegularExpressionValidator Text="*" ID="RegularExpressionValidator1" runat="server" ControlToValidate="cover" ErrorMessage="seule les extentions jpg/png sont supporte" ValidationExpression="[a-zA-Z0_9].*\b(.jpeg|.JPEG|.jpg|.JPG||.png|.PNG)\b"></asp:RegularExpressionValidator>
+                <asp:RegularExpressionValidator Text="*" ID="RegularExpressionValidator1" runat="server" ControlToValidate="cover" ErrorMessage="seule les extentions jpg/png sont supporte" ValidationExpression="^.+\.(jpg|JPG|jpeg|JPEG|png|PNG)$"></asp:RegularExpressionValidator>
 			    <asp:RequiredFieldValidator Text="*" ID="RequiredFieldValidator5" ControlToValidate="cover" runat="server" ErrorMessage="Vous devez rensigner la photo de couverture"></asp:RequiredFieldValidator>
             </div>
 		</div>
@@ -99,7 +99,7 @@
 
 			<div class="controls">
 				<asp:FileUpload ID="document" runat="server" placeholder="choisir votre article au format (zip/rar)" />
-			    <asp:RegularExpressionValidator Text="*" ID="RegularExpressionValidator2" runat="server" ControlToValidate="document" ErrorMessage="seule les extentions zip/rar sont supporte" ValidationExpression="[a-zA-Z0_9].*\b(.rar|.RAR|.zip|.ZIP)\b"></asp:RegularExpressionValidator>
+			    <asp:RegularExpressionValidator Text="*" ID="RegularExpressionValidator2" runat="server" ControlToValidate="document" ErrorMessage="seule les extentions zip/rar sont supporte" ValidationExpression="^.+\.(zip|ZIP|rar|RAR)$"></asp:RegularExpressionValidator>
                 <asp:RequiredFieldValidator Text="*" ID="RequiredFieldValidator4" ControlToValidate="document" runat="server" ErrorMessage="Vous devez rensigner votre document"></asp:RequiredFieldValidator>
             </div>
 		</div>
