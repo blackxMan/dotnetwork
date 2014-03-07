@@ -1,0 +1,131 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="publicat.Site" %>
+
+<%@ Register Src="~/authentication-control.ascx" TagPrefix="uc1" TagName="authenticationcontrol" %>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>e-books maroc</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	
+	<link rel="stylesheet" href="front-assets/css/fronts.css"/>
+	
+	<script src="front-assets/js/jquery.min.js"></script>
+	<script src="front-assets/js/jquery.pages.js"></script>
+
+	<script src="front-assets/js/main.js"></script>
+</head>
+<body class="subscrib">
+	<div id="siteContent">
+		<div id="mainHeader">
+			<div id="left">
+				<div id="logo">
+					<img src="front-assets/images/logo.png" alt="" class="logo"/>
+				</div>
+				<div id="searchBlock">
+					<form action="#" method="get">
+						<div>
+							<input type="text" id="txtSearchBlock" name="txtSearchBlock" value="autheur recherche"/>
+							<input type="submit" id="btnSearchBlock" value=""/>
+						</div>
+					</form>
+				</div>
+				<div id="swfAnim">
+					<div id="slideshow">  
+					  <div id="slidesContainer">  
+						<div class="slide">  
+						  <!-- Contenu pour le slide 1 -->  
+							<img src="front-assets/images/1.jpg" alt="">
+						</div>  
+						<div class="slide">  
+						  <!-- Contenu pour le slide 2 -->  
+							<img src="front-assets/images/2.jpg" alt="">
+						</div>   
+					  </div>    
+					</div> 
+				</div>
+				<div id="lineg">
+				</div>
+			</div>
+			<div id="right">
+				<div class="bleu">
+				</div>
+				<div class="menu">
+					<a href="#" class="">Accueil</a>
+					<a href="#" class="">Inscription</a>
+					
+				</div>
+				<div id="notificationArea">
+					<div class="infoNews">
+						<h2>Offre special.</h2>
+						<p>Trouvez vous <b>Article</b> dans tous <b>les domaines</b> sur <b>Online article</b>.</p>
+					</div>
+					<div class="notif">
+						
+					</div>
+					<div class="accoutBlock">
+                        <uc1:authenticationcontrol runat="server" id="authenticationcontrol" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="mainContent">
+            <div id="content">
+                <asp:ContentPlaceHolder ID="contentHolder" runat="server"></asp:ContentPlaceHolder>
+            </div>
+            <div id="navright">
+                <asp:ContentPlaceHolder ID="navrightHolder" runat="server"></asp:ContentPlaceHolder>
+            </div>
+			
+		</div>
+		<div id="footer">
+			<div class="content">
+				<div class="info">
+					<div class="ctNslettre">
+						<h2>Recevoir NOS Newslettres</h2>
+						<div class="ct">
+							<p>Inscrit-vous dans notre service de newslettres s:</p>
+							<p class="nslettre">
+								<input type="email" value="exemple@exemple.com" class="nslettre"/>
+								<input type="submit" value="OK" class="nslettreok"/>
+							</p>
+						</div>
+					</div>
+					<div class="ctContact">
+						<h2>Nous Contacter</h2>
+						<div class="ct">
+							<p>Veuillez nous contacte sur c'est adresses :</p>
+							<p>
+								<span class="tel">+212 539 24 45 53</span>
+								<span class="fax">+212 539 54 34 43</span>
+								<span class="email">Contacter-nos@online-ebook.ma</span>
+							</p>
+						</div>
+					</div>
+					<div class="ctSocial">
+						<h2>Suivi nous a</h2>
+						<a href="#" class="facebook" title="facebook">f</a>
+						<a href="#" class="twitter" title="twitter">t</a>
+						<a href="#" class="fpl"><img width="130" height='110' src="front-assets/images/flayer.png" alt="ebooks maroc"/></a>
+					</div>
+				</div>
+				<div class="menu">
+					<div class="left">
+						<a href="#" class="txtFpl">E-articles maroc</a>
+						<a href="#">mention legal</a>
+						<span>|</span>
+						<a href="#">contactez-nous</a>
+					</div>
+					<div class="right">
+						<a href="#">Fermer</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
