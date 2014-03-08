@@ -1,17 +1,22 @@
 ﻿
 <%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="publicat.index" %>
+<%@ Import Namespace="publicat.Data" %>
+<%@ Import Namespace="System.Data" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="contentHolder" runat="server">
     <div id="dnTable">
 		<ul id="dtItems">
-			<li data-id="">
+            <% foreach(DataRow dr in dtArticles.Rows){%>
+			<li data-id="<%= dr["document"] %>">
 				<div class="clickable">
-					<img src="front-assets/images/2.jpg" alt="">
+					<img src="uploads/images/<%=  dr["id"]+".jpg" %>" alt="">
 					<div class="ct">
-						<h3>Php is right space</h3>
-						<p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de ...</p>
+						<h3><%=  dr["titre"] %></h3>
+						<p><%=  dr["desciption"] %></p>
 					</div>
 				</div>
 			</li>
+            <%} %>
 		</ul>
 		<div class="holder"></div>
 	</div>
@@ -21,14 +26,9 @@
 	<aside class="widget widget_categories">
 		<h3 class="widget_title">Categories</h3>
 		<ul id="rubrique">
-			<li class="cat-item"><a href="#">Scienece naturel</a></li>
-            <li class="cat-item"><a href="#">Scienece naturel</a></li>
-            <li class="cat-item"><a href="#">Scienece naturel</a></li>
-            <li class="cat-item"><a href="#">Scienece naturel</a></li>
-            <li class="cat-item"><a href="#">Scienece naturel</a></li>
-            <li class="cat-item"><a href="#">Scienece naturel</a></li>
-            <li class="cat-item"><a href="#">Scienece naturel</a></li>
-            <li class="cat-item"><a href="#">Scienece naturel</a></li>
+            <% foreach(DataRow dr in dtThemes.Rows){%>
+			<li class="cat-item"><a href="<%= dr["libelle"].ToString() %>"><%= dr["libelle"].ToString() %></a></li>
+            <%} %>
 		</ul>
 		<div class="holder"></div>
 	</aside>

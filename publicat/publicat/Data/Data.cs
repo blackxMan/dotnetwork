@@ -30,6 +30,7 @@ namespace publicat.Data
             Data.Connection.Close();
             return dt;
         }
+
         public static DataTable getArticles()
         {            
             Data.connecter();
@@ -303,6 +304,10 @@ namespace publicat.Data
                 return false;
             }
         }
+
+        public static DataTable getArticlesByAuteur(int id) { Data.connecter(); Data.Connection.Open(); string MySQLCmd = "select a.*, t.*, c.* from publie p inner join article a on p.id_article = a.id inner join theme t on a.id_th = t.id left outer join correcteur c on a.id_corr = c.id where p.id_aut = ?id "; MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection); cmd.Parameters.AddWithValue("?id", id); MySqlDataReader rdr = cmd.ExecuteReader(); DataTable dt = new DataTable(); dt.Load(rdr); Data.Connection.Close(); return dt; }
+
+        public static DataTable getCorrecteursInfo() { Data.connecter(); Data.Connection.Open(); string MySQLCmd = "SELECT count(a.id) as somme, c.* FROM correcteur c , article a where c.id = a.id_corr group by c.id"; MySqlCommand cmd = new MySqlCommand(MySQLCmd, Data.Connection); MySqlDataReader rdr = cmd.ExecuteReader(); DataTable dt = new DataTable(); dt.Load(rdr); Data.Connection.Close(); return dt; }
 
         public static bool supprimer(string table, int id)
         {

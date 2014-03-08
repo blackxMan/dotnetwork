@@ -36,13 +36,13 @@
 
 		<ul class="submenu">
 			<li>
-				<a href="list-article-new.aspx">
+				<a href="ajouter-article.aspx">
 					<i class="icon-double-angle-right"></i>
 					Nouveaux Articles
 				</a>
 			</li>
 			<li>
-				<a href="wysiwyg.html">
+				<a href="mes-articles.aspx">
 					<i class="icon-double-angle-right"></i>
 					Historique des articles
 				</a>

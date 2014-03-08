@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/layout.Master" AutoEventWireup="true" CodeBehind="grid-example.aspx.cs" Inherits="publicat.grid_example" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/layout.Master" AutoEventWireup="true" CodeBehind="listes-correcteurs.aspx.cs" Inherits="publicat.liste_correcteurs" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="breadcrumbHolder" runat="server">
     <li>
         <i class="icon-home home-icon"></i>
@@ -14,7 +14,7 @@
 		Article
 		<small>
 			<i class="icon-double-angle-right"></i>
-			Ajouter un nouveau article
+			Listes de mes articles
 		</small>
 	</h1>
 </asp:Content>
@@ -22,29 +22,29 @@
     <li class="active">
 		<a href="#">
 			<i class="icon-dashboard"></i>
-			<span class="menu-text"> Autheur </span>
+			<span class="menu-text"> Administrateur </span>
 		</a>
 	</li>
 
 	<li>
 		<a href="#" class="dropdown-toggle">
 			<i class="icon-edit"></i>
-			<span class="menu-text"> Articles </span>
+			<span class="menu-text"> Correcteurs </span>
 
 			<b class="arrow icon-angle-down"></b>
 		</a>
 
 		<ul class="submenu">
 			<li>
-				<a href="list-article-new.aspx">
+				<a href="listes-correcteurs.aspx">
 					<i class="icon-double-angle-right"></i>
-					Nouveaux Articles
+					Listes des correcteurs
 				</a>
 			</li>
 			<li>
-				<a href="wysiwyg.html">
+				<a href="ajouter-correcteur.aspx">
 					<i class="icon-double-angle-right"></i>
-					Historique des articles
+					Ajouter un Correcteur
 				</a>
 			</li>
 		</ul>
@@ -55,10 +55,10 @@
 	        
         <asp:GridView ID="grid" runat="server"  AutoGenerateColumns="false" ShowHeader="False" CssClass="table table-striped table-bordered table-hover">
             <columns>
-                <asp:BoundField DataField="checkboxs" htmlencode="false"/>
-                <asp:BoundField DataField="firstname" />
-                <asp:BoundField DataField="lastname" />
-                <asp:BoundField DataField="actions" htmlencode="false"/>
+                <asp:BoundField DataField="prenom_corr" />
+                <asp:BoundField DataField="nom_corr" />
+                <asp:BoundField DataField="email_corr" />
+                <asp:BoundField DataField="somme" />
             </columns>
         </asp:GridView> 
 
@@ -70,7 +70,7 @@
     <script type="text/javascript">
         $(function () {
            // gridview adaptation
-            $('#contentHolder_grid tbody').before('<thead><tr><th class="center"></th><th>Autheur</th><th>Correcteur</th><th></th></tr></thead>');
+            $('#contentHolder_grid tbody').before('<thead><tr><th>prenom</th><th>nom</th><th>Email</th><th>Nbr Articles Corrige</th></tr></thead>');
             
             var oTable1 = $('#contentHolder_grid').dataTable();
             

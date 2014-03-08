@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/layout.Master" AutoEventWireup="true" CodeBehind="grid-example.aspx.cs" Inherits="publicat.grid_example" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/layout.Master" AutoEventWireup="true" CodeBehind="mes-articles.aspx.cs" Inherits="publicat.mes_articles" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="breadcrumbHolder" runat="server">
     <li>
         <i class="icon-home home-icon"></i>
@@ -7,14 +7,14 @@
 			<i class="icon-angle-right arrow-icon"></i>
 		</span>
     </li>
-    <li class="active">Ajouter</li>
+    <li class="active">Mes articles</li>
 </asp:Content>
 <asp:Content ID="tp1" runat="server" ContentPlaceHolderID="pageTitleHolder">
     <h1>
 		Article
 		<small>
 			<i class="icon-double-angle-right"></i>
-			Ajouter un nouveau article
+			Listes de mes articles
 		</small>
 	</h1>
 </asp:Content>
@@ -36,13 +36,13 @@
 
 		<ul class="submenu">
 			<li>
-				<a href="list-article-new.aspx">
+				<a href="ajouter-article.aspx">
 					<i class="icon-double-angle-right"></i>
 					Nouveaux Articles
 				</a>
 			</li>
 			<li>
-				<a href="wysiwyg.html">
+				<a href="mes-articles.aspx">
 					<i class="icon-double-angle-right"></i>
 					Historique des articles
 				</a>
@@ -55,10 +55,19 @@
 	        
         <asp:GridView ID="grid" runat="server"  AutoGenerateColumns="false" ShowHeader="False" CssClass="table table-striped table-bordered table-hover">
             <columns>
-                <asp:BoundField DataField="checkboxs" htmlencode="false"/>
-                <asp:BoundField DataField="firstname" />
-                <asp:BoundField DataField="lastname" />
-                <asp:BoundField DataField="actions" htmlencode="false"/>
+                <asp:TemplateField>
+                     <ItemTemplate>
+                        <asp:HyperLink runat="server" Text='<%# Eval("titre") %>' target="_new" NavigateUrl='<%# "uploads/articles/" + Eval("document") %>'></asp:HyperLink>
+                     </ItemTemplate>
+                 </asp:TemplateField>
+                <asp:BoundField DataField="desciption" />
+                <asp:TemplateField>
+                     <ItemTemplate>
+                        <asp:Label ID="Label1" runat="server" Text='<%# getStatusText(Convert.ToBoolean(Eval("etat"))) %>'></asp:Label>
+                     </ItemTemplate>
+                 </asp:TemplateField>
+                <asp:BoundField DataField="justification" />
+                <asp:BoundField DataField="date_creation" />
             </columns>
         </asp:GridView> 
 
@@ -70,7 +79,7 @@
     <script type="text/javascript">
         $(function () {
            // gridview adaptation
-            $('#contentHolder_grid tbody').before('<thead><tr><th class="center"></th><th>Autheur</th><th>Correcteur</th><th></th></tr></thead>');
+            $('#contentHolder_grid tbody').before('<thead><tr><th>Titre</th><th>Description</th><th>Etat</th><th>Justification</th><th>Date</th></tr></thead>');
             
             var oTable1 = $('#contentHolder_grid').dataTable();
             
